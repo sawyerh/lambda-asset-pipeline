@@ -1,18 +1,3 @@
-/**
- * Usage:
- * 1. Create an Elastic Transcoder Piperline
- * 2. Configure the variables below: Set your Pipeline
- *    ID, presets, and output directory.
- * 3. Create a new Lambda function. Skip the blueprints
- *    screen, copy + paste all the below code into the
- *    inline code editor. Make sure the "Handler" is set
- *    to index.handler. Make sure the IAM role you select
- *    has the "elastictranscoder:CreateJob" permission.
- *    (see policy.json)
- * 4. Set up your S3 bucket to send events to your Lambda
- *    function when a new video object is created.
- */
-
 // Your AWS Elastic Transcoder Pipeline:
 var PIPELINE_ID = "";
 
