@@ -53,6 +53,7 @@ exports.handler = function(event, context, callback) {
     if (err)
       return callback(err);
 
+    console.log('Created transcoder job: ', data.Job.Id);
     return callback(null, data);
   });
 };
