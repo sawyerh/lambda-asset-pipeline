@@ -1,0 +1,22 @@
+{
+    "Records": [
+        {
+            "eventVersion": "2.0",
+            "eventSource": "aws:s3",
+            "awsRegion": "us-east-1",
+            "eventTime": "2016-06-25T16:48:39.920Z",
+            "eventName": "ObjectCreated:Put",
+            "s3": {
+                "configurationId": "TranscodeNewMp4Videos",
+                "bucket": {
+                    "name": "example-bucket",
+                    "arn": "arn:aws:s3:::example-bucket"
+                },
+                "object": {
+                    "key": "uploads/example.mp4",
+                    "size": 5939780,
+                }
+            }
+        }
+    ]
+}
