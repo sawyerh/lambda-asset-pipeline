@@ -29,8 +29,9 @@ function basename(path) {
 function outputs(name) {
   return PRESETS.map(function(output) {
     return {
-      Key: name + "." + output.keySuffix,
-      PresetId: output.id
+      Key: name + output.keySuffix,
+      PresetId: output.id,
+      ThumbnailPattern: name + "-{count}",
     };
   });
 }
@@ -44,7 +45,7 @@ exports.handler = function(event, context) {
     },
     PipelineId: PIPELINE_ID,
     OutputKeyPrefix: OUTPUT_KEY_PREFIX,
-    Outputs: outputs(key)
+    Outputs: outputs(basename(key))
   };
 
   elastictranscoder.createJob(params, function(err, data) {
