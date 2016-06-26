@@ -1,0 +1,16 @@
+{
+  "Records": [
+    {
+      "s3": {
+        "bucket": {
+          "name": "example-bucket",
+          "arn": "arn:aws:s3:::example-bucket"
+        },
+        "object": {
+          "key": "uploads/example.jpg"
+        }
+      }
+    }
+  ]
+}
+
