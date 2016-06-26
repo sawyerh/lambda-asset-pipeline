@@ -1,6 +1,6 @@
 AWS Lambda functions to process videos and resize images. 
 
-See the individual READMEs in each subdirectory for usage info.
+See the individual README in each subdirectory for usage info.
 
 ### Author
 
