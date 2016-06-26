@@ -1,3 +1,5 @@
+An AWS Lambda function that's triggered when a new image is added to an S3 bucket and creates resized versions of that image.
+
 ## Usage
 
 1. Set your image versions and output directory in the `CONFIG` object at the top of `index.js`. **Important: You'll likely want to set the output directory (`OUTPUT_PREFIX`) to a different directory than the one your original images are uploaded to, otherwise S3 may send an event notification to Lambda after each resized image is placed in your bucket, and you don't want that.**
