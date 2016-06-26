@@ -1,10 +1,15 @@
 'use strict';
 const CONFIG = {
   OUTPUT_PREFIX: 'uploads/',
-  SIZES: [
+  VERSIONS: [
     {
       maxHeight: 100,
-      maxWidth: 100
+      maxWidth: 100,
+      suffix: 'thumb'
+    }, {
+      maxHeight: 300,
+      maxWidth: 500,
+      suffix: 'small'
     }
   ]
 };
@@ -37,12 +42,23 @@ function ImageResizer(bucket, key, callback) {
   this.height = null;
 }
 
-ImageResizer.prototype.resize = function() {
+ImageResizer.prototype.resizeAll = function() {
   this.download()
     .then(this.getDimensions.bind(this))
-    .then(this.transformAndUpload.bind(this))
+    .then(this.resize.bind(this))
     .then(() => this.callback(null, `Resized ${this.key}`))
     .catch((error) => this.callback(error));
+};
+
+ImageResizer.prototype.resize = function(index) {
+  if (!index) index = 0;
+  const version = CONFIG.VERSIONS[index];
+
+  return this.transformAndUpload(version)
+    .then(() => {
+      if (index < CONFIG.VERSIONS.length - 1)
+        return this.resize(index + 1);
+    });
 };
 
 ImageResizer.prototype.download = function() {
@@ -72,13 +88,13 @@ ImageResizer.prototype.getDimensions = function() {
   });
 };
 
-ImageResizer.prototype.transformAndUpload = function() {
+ImageResizer.prototype.transformAndUpload = function(version) {
   return new Promise((resolve, reject) => {
     // Infer the scaling factor to avoid
     // stretching the image unnaturally.
     const scalingFactor = Math.min(
-      CONFIG.SIZES[0].maxWidth / this.width,
-      CONFIG.SIZES[0].maxHeight / this.height
+      version.maxWidth / this.width,
+      version.maxHeight / this.height
     );
 
     const tmpFilePath = `/tmp/resized.${this.ext}`;
@@ -95,7 +111,7 @@ ImageResizer.prototype.transformAndUpload = function() {
       ImageMagick.resize(data, (err, stdout, stderr) => {
         if (err) return reject(err);
         var resizedBuffer = new Buffer(fs.readFileSync(tmpFilePath));
-        this.upload(resizedBuffer)
+        this.upload(resizedBuffer, version)
           .then(() => {
             try { fs.unlinkSync(tmpFilePath) } catch (e) {}
             resolve();
@@ -108,9 +124,8 @@ ImageResizer.prototype.transformAndUpload = function() {
   });
 };
 
-ImageResizer.prototype.upload = function(resizedBuffer) {
-  const filename = basename(this.key) + "_" + this.width + "x" + this.height + "." + this.ext;
-  console.log(filename);
+ImageResizer.prototype.upload = function(resizedBuffer, version) {
+  const filename = basename(this.key) + "_" + version.suffix + "." + this.ext;
 
   return new Promise((resolve, reject) => {
     s3.putObject({
@@ -135,5 +150,5 @@ exports.handler = function(event, context, callback) {
   if (!ext || ['jpg', 'jpeg', 'png'].indexOf(ext) < 0)
     return callback(null, "Skipping transformation. File extension is not jpg/jpeg/png: " + key);
 
-  resizer.resize();
+  return resizer.resizeAll();
 };
