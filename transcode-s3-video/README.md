@@ -1,3 +1,5 @@
+An AWS Lambda function that's triggered when a new video is added to an S3 bucket and creates transcoded versions of that video using AWS Elastic Transcoder.
+
 ## Usage
 
 1. [Create an Elastic Transcoder Pipeline](http://docs.aws.amazon.com/elastictranscoder/latest/developerguide/creating-pipelines.html)
