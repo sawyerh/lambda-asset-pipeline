@@ -4,12 +4,12 @@ const CONFIG = {
   PIPELINE_ID: "",
   // Set which presets should be used to transcode
   // your video. Add a new object to this array
-  // for each preset. The keySuffix will be appended
+  // for each preset. The suffix will be appended
   // to the transcoded file's name and should at least
   // contain the expected file extension:
   PRESETS: [{
     id: "1351620000001-100070", // "System preset: Web"
-    keySuffix: ".mp4"
+    suffix: ".mp4"
   }],
   // Set the directory where you'd like transcoded
   // videos to be placed. This can also be used to
@@ -30,9 +30,9 @@ function basename(path) {
 function outputs(name) {
   return CONFIG.PRESETS.map(function(output) {
     return {
-      Key: name + output.keySuffix,
+      Key: name + output.suffix,
       PresetId: output.id,
-      ThumbnailPattern: name + "-{count}",
+      ThumbnailPattern: name + "-{count}"
     };
   });
 }

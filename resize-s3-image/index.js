@@ -1,6 +1,14 @@
 'use strict';
 const CONFIG = {
+  // Set the directory where you'd like resized
+  // images to be placed. This should be different
+  // than where your original image was uploaded.
+  // This can also be used to add a prefix to the
+  // resized file's name:
   OUTPUT_PREFIX: 'uploads/',
+  // Set the sizes your image should be resized to fit
+  // Add a new object to this array for each version.
+  // The suffix will be appended to the resized file's name:
   VERSIONS: [
     {
       maxHeight: 100,
