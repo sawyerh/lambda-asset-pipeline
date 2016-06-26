@@ -39,7 +39,7 @@ function outputs(name) {
 
 exports.handler = function(event, context, callback) {
   console.log('Received event:', JSON.stringify(event, null, 2));
-  let key = event.Records[0].s3.object.key;
+  const key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, " "));
   let params = {
     Input: {
       Key: key

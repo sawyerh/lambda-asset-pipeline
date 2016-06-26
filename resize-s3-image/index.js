@@ -143,7 +143,7 @@ ImageResizer.prototype.upload = function(resizedBuffer, version) {
 exports.handler = function(event, context, callback) {
   console.log('Received event:', JSON.stringify(event, null, 2));
   const bucket = event.Records[0].s3.bucket.name;
-  const key = event.Records[0].s3.object.key;
+  const key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, " "));
   const ext = extension(key);
   let resizer = new ImageResizer(bucket, key, callback);
 
